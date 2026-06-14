@@ -2,6 +2,8 @@
 #include <iostream>
 #include <numeric>
 #include <fstream>
+#include <cfloat>
+
 #include "SDL.h"
 using namespace dae;
 

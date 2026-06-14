@@ -238,8 +238,8 @@ namespace dae {
 	{
 		return {
 			{1, 0, 0, 0},
-			{0, cos(pitch), -sin(pitch), 0},
-			{0, sin(pitch), cos(pitch), 0},
+			{0, static_cast<float>(cos(pitch)), -static_cast<float>(sin(pitch)), 0},
+			{0, static_cast<float>(sin(pitch)), static_cast<float>(cos(pitch)), 0},
 			{0, 0, 0, 1}
 		};
 	}
@@ -247,9 +247,9 @@ namespace dae {
 	Matrix Matrix::CreateRotationY(float yaw)
 	{
 		return {
-			{cos(yaw), 0, -sin(yaw), 0},
+			{static_cast<float>(cos(yaw)), 0, -static_cast<float>(sin(yaw)), 0},
 			{0, 1, 0, 0},
-			{sin(yaw), 0, cos(yaw), 0},
+			{static_cast<float>(sin(yaw)), 0, static_cast<float>(cos(yaw)), 0},
 			{0, 0, 0, 1}
 		};
 	}
@@ -257,8 +257,8 @@ namespace dae {
 	Matrix Matrix::CreateRotationZ(float roll)
 	{
 		return {
-			{cos(roll), sin(roll), 0, 0},
-			{-sin(roll), cos(roll), 0, 0},
+			{static_cast<float>(cos(roll)),	 static_cast<float>(sin(roll)), 0, 0},
+			{-static_cast<float>(sin(roll)), static_cast<float>(cos(roll)), 0, 0},
 			{0, 0, 1, 0},
 			{0, 0, 0, 1}
 		};
