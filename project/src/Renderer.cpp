@@ -27,17 +27,29 @@ void Renderer::Render(Scene* pScene) const
 	auto& materials = pScene->GetMaterials();
 	auto& lights = pScene->GetLights();
 
+
+	const float aspectRatio{ static_cast<float>(m_Width) / m_Height};
 	for (int px{}; px < m_Width; ++px)
 	{
 		for (int py{}; py < m_Height; ++py)
 		{
-			float gradient = px / static_cast<float>(m_Width);
-			gradient += py / static_cast<float>(m_Height);
-			gradient /= 2.0f;
 
-			ColorRGB finalColor{ gradient, gradient, gradient };
+			
+			Vector2 normalizedDeciceCoordinate{ 2 * (px + 0.5f)/m_Width - 1.0f, 1 - 2 * (py + 0.5f) / m_Height};
+			normalizedDeciceCoordinate.x *= aspectRatio;
+			Vector3 rayDirection{ normalizedDeciceCoordinate .x, normalizedDeciceCoordinate.y , 1.0f};
+			rayDirection.Normalize();
+			Ray ray{.origin = camera.origin , .direction = rayDirection};
 
-			//Update Color in Buffer
+			Sphere testSphere{.origin = {0.f,0.f ,100.f}, .radius = 50.0f , .materialIndex = 0};
+
+			ColorRGB finalColor{ rayDirection.x,rayDirection.y,rayDirection.z };
+			HitRecord hit;
+			if (GeometryUtils::HitTest_Sphere(testSphere,ray, hit)) {
+				finalColor = materials[hit.materialIndex]->Shade();
+			}
+
+
 			finalColor.MaxToOne();
 
 			m_pBufferPixels[px + (py * m_Width)] = SDL_MapRGB(m_pBuffer->format,
